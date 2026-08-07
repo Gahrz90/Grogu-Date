@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Grogu Date
 
-## Getting Started
+Una pagina singola da condividere via email o WhatsApp: una domanda, due pulsanti.
+Il pulsante **No** scappa dal cursore; se viene inseguito per 3 secondi di fila
+compare un popup che chiede conferma. La risposta (sì con data, oppure no) arriva
+per email.
 
-First, run the development server:
+## Come funziona
+
+1. **Sì** → si apre il selettore data (`<input type="date">`, anteprima in italiano)
+   e con _Invia_ parte l'email con la data scelta.
+2. **No** → il pulsante schiva il cursore (posizione `fixed` in un portal, salti
+   calcolati per restare nel viewport). Dopo 3 secondi di inseguimento continuo,
+   o 8 tap su mobile, si apre il modal _"Mi vuoi spezzare il cuore davvero così?"_.
+   - _No, ci ripenso_ → il modal si chiude e la caccia può continuare.
+   - _Sì, voglio spezzarlo_ → cuore spezzato, "Il giorno più triste della mia vita"
+     e email con risposta **no**.
+
+## Setup
 
 ```bash
+cp .env.example .env.local   # poi compila le variabili
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Variabili (vedi [.env.example](.env.example)):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variabile              | Cosa fa                                                        |
+| ---------------------- | -------------------------------------------------------------- |
+| `RESEND_API_KEY`       | API key [Resend](https://resend.com) per l'invio               |
+| `DATE_MAIL_TO`         | Destinatario della risposta                                    |
+| `DATE_MAIL_FROM`       | Mittente verificato su Resend                                  |
+| `SENDER_NAME`          | Nome mostrato in pagina ("Trasmissione da …")                   |
+| `NEXT_PUBLIC_SITE_URL` | URL pubblico, serve per la preview OG su WhatsApp               |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Senza `RESEND_API_KEY` / `DATE_MAIL_TO` la pagina funziona comunque: la risposta
+viene scritta nel log del server invece di essere spedita.
 
-## Learn More
+## Struttura
 
-To learn more about Next.js, take a look at the following resources:
+- [app/page.tsx](app/page.tsx) — Server Component, starfield + card
+- [app/actions.ts](app/actions.ts) — Server Action con validazione data e rate limit
+- [app/lib/mailer.ts](app/lib/mailer.ts) — client Resend via `fetch`, zero dipendenze
+- [app/\_components/](app/_components/) — UI: `DateInvite` (macchina a stati),
+  `RunawayNoButton`, `HeartbreakModal`, `Grogu`/`BrokenHeart` (SVG inline)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Stack: Next.js 16 (App Router), React 19, Tailwind CSS v4.
