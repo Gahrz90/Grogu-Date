@@ -40,7 +40,7 @@ export default function Image() {
             letterSpacing: -2,
           }}
         >
-          Grogu si chiede se ti andrebbe una date con me?
+          Ciao! Io e Grogu ci chiediamo se ti andrebbe di uscire una di queste sere?
         </div>
         <div style={{ display: "flex", marginTop: 26, fontSize: 32, color: "#f4ead499" }}>
           Due pulsanti. Uno dei due scappa.

@@ -50,7 +50,7 @@ export function HeartbreakModal({
         </div>
 
         <h2 id="heartbreak-title" className="text-2xl font-semibold text-sand text-balance">
-          Mi vuoi spezzare il cuore davvero così?
+          Oh no! Ci vuoi spezzare il cuore davvero così?
         </h2>
         <p className="mt-3 text-sm text-sand/60">
           You&apos;re a bad baby! <span aria-hidden>😭</span>
@@ -63,14 +63,14 @@ export function HeartbreakModal({
             onClick={onDismiss}
             className="rounded-full bg-force px-7 py-3.5 font-semibold text-void transition-all duration-300 hover:bg-force/90 hover:shadow-[0_0_28px_-4px_rgba(168,211,138,0.7)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-force"
           >
-            No, ci ripenso
+            No, ci ho ripensato! 😌
           </button>
           <button
             type="button"
             onClick={onConfirm}
             className="rounded-full border border-heart/40 bg-heart/10 px-7 py-3.5 font-medium text-heart transition-all duration-300 hover:bg-heart/20 hover:shadow-[0_0_24px_-4px_rgba(226,101,122,0.6)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-heart"
           >
-            Sì, voglio spezzarlo
+            Sì, mi dispiace 😢
           </button>
         </div>
       </div>

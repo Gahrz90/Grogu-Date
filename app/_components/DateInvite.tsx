@@ -147,10 +147,10 @@ export function DateInvite({ senderName }: { senderName: string }) {
                 Trasmissione da {senderName}
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
-                Grogu si chiede se ti andrebbe una date con me?
+                Ciao! Io e Grogu ci chiediamo se ti andrebbe di uscire una di queste sere?
               </h1>
               <p className="mx-auto mt-4 max-w-sm text-pretty text-sm leading-relaxed text-sand/60 sm:text-base">
-                Due pulsanti, una domanda. Uno dei due funziona molto meglio dell&apos;altro.
+                Seleziona una risposta, ma ti avverto: Grogu è suscettibile alla risposta!
               </p>
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
@@ -174,7 +174,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
           {phase === "activity" && (
             <div key="activity" className="animate-rise">
               <p className="mt-6 text-xs uppercase tracking-[0.3em] text-force/70">
-                Ha detto sì
+                Hai detto di sì! ☺️
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
                 Cosa ti andrebbe di fare?
@@ -232,7 +232,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
                 La Forza è con noi
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
-                Allora scegli tu il giorno.
+                Scegli un giorno
               </h1>
 
               {chosen && (

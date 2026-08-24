@@ -11,7 +11,7 @@ per email.
    e con _Invia_ parte l'email con la data scelta.
 2. **No** → il pulsante schiva il cursore (posizione `fixed` in un portal, salti
    calcolati per restare nel viewport). Dopo 3 secondi di inseguimento continuo,
-   o 8 tap su mobile, si apre il modal _"Mi vuoi spezzare il cuore davvero così?"_.
+   o 8 tap su mobile, si apre il modal _"Ci vuoi spezzare il cuore davvero così?"_.
    - _No, ci ripenso_ → il modal si chiude e la caccia può continuare.
    - _Sì, voglio spezzarlo_ → cuore spezzato, "Il giorno più triste della mia vita"
      e email con risposta **no**.
