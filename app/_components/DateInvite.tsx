@@ -37,6 +37,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
   const [phase, setPhase] = useState<Phase>("ask");
   const [modalOpen, setModalOpen] = useState(false);
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [activity, setActivity] = useState<ActivityId | null>(null);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,12 +87,18 @@ export function DateInvite({ senderName }: { senderName: string }) {
           : "hopeful";
 
   const submit = useCallback(
-    async (answer: "yes" | "no", isoDate?: string, activityId?: ActivityId | null) => {
+    async (
+      answer: "yes" | "no",
+      isoDate?: string,
+      isoTime?: string,
+      activityId?: ActivityId | null,
+    ) => {
       setSending(true);
       setError(null);
       const result = await sendAnswer({
         answer,
         date: isoDate ?? null,
+        time: isoTime ?? null,
         activity: activityId ?? null,
       });
       setSending(false);
@@ -111,9 +118,9 @@ export function DateInvite({ senderName }: { senderName: string }) {
   }, [submit]);
 
   const confirmDate = useCallback(async () => {
-    if (!date) return;
-    if (await submit("yes", date, activity)) setPhase("accepted");
-  }, [activity, date, submit]);
+    if (!date || !time) return;
+    if (await submit("yes", date, time, activity)) setPhase("accepted");
+  }, [activity, date, time, submit]);
 
   // Let the picked card show its selected state before moving on.
   const handoffRef = useRef<number | undefined>(undefined);
@@ -174,7 +181,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
           {phase === "activity" && (
             <div key="activity" className="animate-rise">
               <p className="mt-6 text-xs uppercase tracking-[0.3em] text-force/70">
-                Hai detto di sì! ☺️
+                Non ci credo!!
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
                 Cosa ti andrebbe di fare?
@@ -242,28 +249,50 @@ export function DateInvite({ senderName }: { senderName: string }) {
                 </p>
               )}
 
-              <label
-                htmlFor="date-input"
-                className="mt-8 block text-left text-sm font-medium text-sand/70"
-              >
-                Quando ci vediamo?
-              </label>
-              <input
-                id="date-input"
-                type="date"
-                lang="it-IT"
-                value={date}
-                min={todayIso()}
-                onChange={(event) => setDate(event.target.value)}
-                className="mt-2 w-full rounded-2xl border border-force/25 bg-void/70 px-5 py-4 text-lg text-sand outline-none transition-all duration-300 [color-scheme:dark] focus:border-force/70 focus:shadow-[0_0_0_4px_rgba(168,211,138,0.15)]"
-              />
+              <div className="mt-8 grid gap-4 sm:grid-cols-[1fr_auto]">
+                <div>
+                  <label
+                    htmlFor="date-input"
+                    className="block text-left text-sm font-medium text-sand/70"
+                  >
+                    Quando ci vediamo?
+                  </label>
+                  <input
+                    id="date-input"
+                    type="date"
+                    lang="it-IT"
+                    value={date}
+                    min={todayIso()}
+                    onChange={(event) => setDate(event.target.value)}
+                    className="mt-2 w-full rounded-2xl border border-force/25 bg-void/70 px-5 py-4 text-lg text-sand outline-none transition-all duration-300 [color-scheme:dark] focus:border-force/70 focus:shadow-[0_0_0_4px_rgba(168,211,138,0.15)]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="time-input"
+                    className="block text-left text-sm font-medium text-sand/70"
+                  >
+                    A che ora?
+                  </label>
+                  <input
+                    id="time-input"
+                    type="time"
+                    lang="it-IT"
+                    value={time}
+                    onChange={(event) => setTime(event.target.value)}
+                    className="mt-2 w-full rounded-2xl border border-force/25 bg-void/70 px-5 py-4 text-lg text-sand outline-none transition-all duration-300 [color-scheme:dark] focus:border-force/70 focus:shadow-[0_0_0_4px_rgba(168,211,138,0.15)]"
+                  />
+                </div>
+              </div>
 
               <p
                 className={`mt-3 min-h-6 text-left text-sm transition-all duration-500 ${
-                  date ? "text-force opacity-100" : "text-sand/40 opacity-70"
+                  date && time ? "text-force opacity-100" : "text-sand/40 opacity-70"
                 }`}
               >
-                {date ? formatItalian(date) : "Formato: giorno / mese / anno"}
+                {date && time
+                  ? `${formatItalian(date)} alle ${time}`
+                  : "Scegli giorno e ora"}
               </p>
 
               {error && (
@@ -275,7 +304,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <button
                   type="button"
-                  disabled={!date || sending}
+                  disabled={!date || !time || sending}
                   onClick={confirmDate}
                   className="rounded-full bg-force px-10 py-3.5 text-lg font-semibold text-void transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_38px_-10px_rgba(168,211,138,0.85)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-force disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none"
                 >
@@ -311,7 +340,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
                   </p>
                 )}
                 <p className="rounded-2xl border border-force/25 bg-force/10 px-5 py-4 text-lg font-semibold text-force">
-                  {formatItalian(date)}
+                  {formatItalian(date)} · ore {time}
                 </p>
               </div>
               <p className="mx-auto mt-6 max-w-sm text-pretty text-sm text-sand/60">

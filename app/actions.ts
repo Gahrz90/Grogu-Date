@@ -36,6 +36,13 @@ function isValidIsoDate(value: string) {
   );
 }
 
+function isValidTime(value: string) {
+  const match = /^(\d{2}):(\d{2})$/.exec(value);
+  if (!match) return false;
+  const [hours, minutes] = [Number(match[1]), Number(match[2])];
+  return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
+}
+
 function formatItalian(iso: string) {
   const [year, month, day] = iso.split("-").map(Number);
   const formatted = new Intl.DateTimeFormat("it-IT", {
@@ -51,6 +58,7 @@ function formatItalian(iso: string) {
 export async function sendAnswer(input: {
   answer: Answer;
   date?: string | null;
+  time?: string | null;
   activity?: string | null;
 }): Promise<AnswerResult> {
   const answer = input?.answer;
@@ -61,6 +69,11 @@ export async function sendAnswer(input: {
   const date = typeof input?.date === "string" ? input.date : null;
   if (answer === "yes" && (!date || !isValidIsoDate(date))) {
     return { status: "error", message: "Data non valida." };
+  }
+
+  const time = typeof input?.time === "string" ? input.time : null;
+  if (answer === "yes" && (!time || !isValidTime(time))) {
+    return { status: "error", message: "Ora non valida." };
   }
 
   const activity = findActivity(input?.activity);
@@ -76,12 +89,12 @@ export async function sendAnswer(input: {
 
   const subject =
     answer === "yes"
-      ? `💚 Ha detto SÌ — ${activity?.label} il ${prettyDate}`
+      ? `💚 Ha detto SÌ — ${activity?.label} il ${prettyDate} alle ${time}`
       : "💔 Ha detto NO (il giorno più triste della mia vita)";
 
   const text =
     answer === "yes"
-      ? `Ha detto SÌ!\nCosa: ${activity?.icon} ${activity?.label}\nQuando: ${prettyDate} (${date})`
+      ? `Ha detto SÌ!\nCosa: ${activity?.icon} ${activity?.label}\nQuando: ${prettyDate} alle ${time} (${date} ${time})`
       : "Ha inseguito il pulsante No fino in fondo e ha confermato: è un no.";
 
   const html = `
@@ -106,9 +119,9 @@ export async function sendAnswer(input: {
                  ${activity?.icon} ${activity?.label}
                </p>
                <p style="margin:0;padding:16px 20px;background:#0f2a1c;border-radius:14px;font-size:20px;font-weight:600;color:#f4ead4;">
-                 ${prettyDate}
+                 ${prettyDate} · ore ${time}
                </p>
-               <p style="margin:16px 0 0;font-size:13px;color:#f4ead499;">Formato ISO: ${date}</p>`
+               <p style="margin:16px 0 0;font-size:13px;color:#f4ead499;">Formato ISO: ${date} ${time}</p>`
             : `<p style="margin:0;font-size:16px;line-height:1.6;color:#f4ead4cc;">
                  Ha inseguito il pulsante “No” per tre secondi interi e poi ha confermato nel popup.
                  Determinazione notevole. Cuore a pezzi.
