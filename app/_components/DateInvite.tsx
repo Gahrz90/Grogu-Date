@@ -154,10 +154,10 @@ export function DateInvite({ senderName }: { senderName: string }) {
                 Trasmissione da {senderName}
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
-                Ciao! Io e Grogu ci chiediamo se ti andrebbe di uscire una di queste sere?
+                Ciao! Grogu si chiedeva se ti andrebbe di unirti a lui in una missione intergalattica?
               </h1>
               <p className="mx-auto mt-4 max-w-sm text-pretty text-sm leading-relaxed text-sand/60 sm:text-base">
-                Seleziona una risposta, ma ti avverto: Grogu è suscettibile alla risposta!
+                Seleziona una risposta, ma ti avverto: Grogu è un po' suscettibile a riguardo!
               </p>
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
@@ -181,7 +181,7 @@ export function DateInvite({ senderName }: { senderName: string }) {
           {phase === "activity" && (
             <div key="activity" className="animate-rise">
               <p className="mt-6 text-xs uppercase tracking-[0.3em] text-force/70">
-                Non ci credo!!
+                Grogu è curioso
               </p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight text-balance text-sand sm:text-4xl">
                 Cosa ti andrebbe di fare?

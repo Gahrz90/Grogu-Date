@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Mi chiedo se ti andrebbe di uscire con me?";
+export const alt = "Grogu si chiedeva se ti andrebbe di unirti a lui in una missione intergalattica?";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +40,7 @@ export default function Image() {
             letterSpacing: -2,
           }}
         >
-          Ciao! Io e Grogu ci chiediamo se ti andrebbe di uscire una di queste sere?
+          Ciao! Grogu si chiedeva se ti andrebbe di unirti a lui in una missione intergalattica?
         </div>
         <div style={{ display: "flex", marginTop: 26, fontSize: 32, color: "#f4ead499" }}>
           Due pulsanti. Uno dei due scappa.
